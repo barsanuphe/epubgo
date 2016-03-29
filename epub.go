@@ -80,7 +80,7 @@ func (e *Epub) parseFiles() (err error) {
 	if ncxPath != "" {
 		ncx, err := e.OpenFile(ncxPath)
 		if err != nil {
-			return errors.New("Can't open the NCX file")
+			return errors.New("Could not open the NCX file")
 		}
 		defer ncx.Close()
 		e.ncx, err = parseNCX(ncx)
@@ -111,7 +111,7 @@ func (e Epub) OpenFileId(id string) (io.ReadCloser, error) {
 // Navigation returns a navigation iterator
 func (e Epub) Navigation() (*NavigationIterator, error) {
 	if e.ncx == nil {
-		return nil, errors.New("There is no NCX file on the epub")
+		return nil, errors.New("Could not find any NCX file")
 	}
 	return newNavigationIterator(e.ncx.navMap())
 }
@@ -136,7 +136,7 @@ func (e Epub) Metadata(field string) ([]string, error) {
 		return cont, nil
 	}
 
-	return nil, errors.New("Field " + field + " don't exists")
+	return nil, errors.New("Metadata field " + field + " does not exist")
 }
 
 // MetadataFields retunrs the list of metadata fields pressent on the current epub
@@ -164,5 +164,5 @@ func (e Epub) MetadataAttr(field string) ([]map[string]string, error) {
 		return attr, nil
 	}
 
-	return nil, errors.New("Field " + field + " don't exists")
+	return nil, errors.New("Metadata field " + field + " does not exist")
 }
