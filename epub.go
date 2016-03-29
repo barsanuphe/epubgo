@@ -27,7 +27,7 @@ type mdataElement struct {
 	attr    map[string]string
 }
 
-// Open opens an existing epub
+// Open an existing epub
 func Open(path string) (e *Epub, err error) {
 	e = new(Epub)
 	e.file, err = os.Open(path)
@@ -42,7 +42,7 @@ func Open(path string) (e *Epub, err error) {
 	return
 }
 
-// Load loads an epub from an io.ReaderAt
+// Load an epub from an io.ReaderAt
 func Load(r io.ReaderAt, size int64) (e *Epub, err error) {
 	e = new(Epub)
 	e.file = nil
@@ -88,19 +88,19 @@ func (e *Epub) parseFiles() (err error) {
 	return
 }
 
-// Close closes the epub file
+// Close the epub file
 func (e Epub) Close() {
 	if e.file != nil {
 		e.file.Close()
 	}
 }
 
-// OpenFile opens a file inside the epub
+// OpenFile inside the epub
 func (e Epub) OpenFile(name string) (io.ReadCloser, error) {
 	return openFile(e.zip, e.rootPath+name)
 }
 
-// OpenFileId opens a file from it's id
+// OpenFileId opens a file from its id
 //
 // The id of the files often appears on metadata fields
 func (e Epub) OpenFileId(id string) (io.ReadCloser, error) {
@@ -139,7 +139,7 @@ func (e Epub) Metadata(field string) ([]string, error) {
 	return nil, errors.New("Metadata field " + field + " does not exist")
 }
 
-// MetadataFields retunrs the list of metadata fields pressent on the current epub
+// MetadataFields returns the list of metadata fields present in the current epub
 func (e Epub) MetadataFields() []string {
 	fields := make([]string, len(e.metadata))
 	i := 0
@@ -152,8 +152,8 @@ func (e Epub) MetadataFields() []string {
 
 // MetadataAttr returns the metadata attributes
 //
-// Returns: an array of maps of each attribute and it's value.
-// The array has the fields on the same order than the Metadata method.
+// Returns: an array of maps of each attribute and its value.
+// The fields of this array are in the same order than in the Metadata method.
 func (e Epub) MetadataAttr(field string) ([]map[string]string, error) {
 	elem, ok := e.metadata[field]
 	if ok {
