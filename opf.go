@@ -118,7 +118,7 @@ func (opf xmlOPF) toMData() mdata {
 		}
 
 		fieldName := strings.ToLower(typeOf.Field(i).Name)
-		data := make([]mdataElement, field.Len())
+		data := make([]MdataElement, field.Len())
 		for j := 0; j < field.Len(); j++ {
 			element := field.Index(j).Interface()
 			data[j] = elementToMData(element)
@@ -128,30 +128,30 @@ func (opf xmlOPF) toMData() mdata {
 	return metadata
 }
 
-func elementToMData(element interface{}) (result mdataElement) {
-	result.attr = make(map[string]string)
+func elementToMData(element interface{}) (result MdataElement) {
+	result.Attr = make(map[string]string)
 	switch element.(type) {
 	case string:
-		result.content, _ = element.(string)
+		result.Content, _ = element.(string)
 	case identifier:
 		ident, _ := element.(identifier)
-		result.content = ident.Data
-		result.attr["id"] = ident.ID
-		result.attr["scheme"] = ident.Scheme
+		result.Content = ident.Data
+		result.Attr["id"] = ident.ID
+		result.Attr["scheme"] = ident.Scheme
 	case author:
 		auth, _ := element.(author)
-		result.content = auth.Data
-		result.attr["file-as"] = auth.FileAs
-		result.attr["role"] = auth.Role
+		result.Content = auth.Data
+		result.Attr["file-as"] = auth.FileAs
+		result.Attr["role"] = auth.Role
 	case date:
 		d, _ := element.(date)
-		result.content = d.Data
-		result.attr["event"] = d.Event
+		result.Content = d.Data
+		result.Attr["event"] = d.Event
 	case metafield:
 		m, _ := element.(metafield)
-		result.content = m.Content
-		result.attr["name"] = m.Name
-		result.attr["content"] = m.Content
+		result.Content = m.Content
+		result.Attr["name"] = m.Name
+		result.Attr["content"] = m.Content
 	}
 	return
 }

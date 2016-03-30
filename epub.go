@@ -9,6 +9,7 @@ import (
 	"errors"
 	"io"
 	"os"
+	"fmt"
 )
 
 // Epub holds all the data of the ebook
@@ -21,10 +22,10 @@ type Epub struct {
 	ncx      *xmlNCX
 }
 
-type mdata map[string][]mdataElement
-type mdataElement struct {
-	content string
-	attr    map[string]string
+type mdata map[string][]MdataElement
+type MdataElement struct {
+	Content string
+	Attr    map[string]string
 }
 
 // Open an existing epub
@@ -131,7 +132,7 @@ func (e Epub) Metadata(field string) ([]string, error) {
 	if ok {
 		cont := make([]string, len(elem))
 		for i, e := range elem {
-			cont[i] = e.content
+			cont[i] = e.Content
 		}
 		return cont, nil
 	}
@@ -159,10 +160,20 @@ func (e Epub) MetadataAttr(field string) ([]map[string]string, error) {
 	if ok {
 		attr := make([]map[string]string, len(elem))
 		for i, e := range elem {
-			attr[i] = e.attr
+			attr[i] = e.Attr
 		}
 		return attr, nil
 	}
 
+	return nil, errors.New("Metadata field " + field + " does not exist")
+}
+
+// MetadataElement returns the values and attributes of a Metadata field.
+// See Metadata() for valid fields.
+func (e Epub) MetadataElement(field string) ([]MdataElement, error) {
+	elem, ok := e.metadata[field]
+	if ok {
+		return elem, nil
+	}
 	return nil, errors.New("Metadata field " + field + " does not exist")
 }
