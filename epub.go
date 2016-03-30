@@ -9,7 +9,6 @@ import (
 	"errors"
 	"io"
 	"os"
-	"fmt"
 )
 
 // Epub holds all the data of the ebook
@@ -22,11 +21,13 @@ type Epub struct {
 	ncx      *xmlNCX
 }
 
-type mdata map[string][]MdataElement
+// MdataElement contains the value and a map of attributes of any valid field
 type MdataElement struct {
 	Content string
 	Attr    map[string]string
 }
+
+type mdata map[string][]MdataElement
 
 // Open an existing epub
 func Open(path string) (e *Epub, err error) {
